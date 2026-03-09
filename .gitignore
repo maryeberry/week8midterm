@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Environment variables
+.env
+.env.local
+
+# API keys (once added)
+config/keys.js
+config/secrets.js
+
+# Logs
+*.log
+
+# Node (if added later)
+node_modules/
