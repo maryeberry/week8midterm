@@ -50,6 +50,9 @@
   color: var(--color-accent);
 }
 
+/* Ensure the hidden attribute always wins over display rules */
+[hidden] { display: none !important; }
+
 /* =====================
    EMPTY STATE
    ===================== */
