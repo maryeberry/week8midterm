@@ -117,6 +117,7 @@ heroLogoutBtn.addEventListener('click', () => auth.signOut());
 
 // ── Friendly error messages ───────────────────────────
 function friendlyError(code) {
+  console.error('[CineSwipe] Auth error code:', code);
   switch (code) {
     case 'auth/user-not-found':
     case 'auth/wrong-password':
@@ -124,6 +125,9 @@ function friendlyError(code) {
     case 'auth/email-already-in-use': return 'That username is already taken.';
     case 'auth/weak-password':        return 'Password must be at least 6 characters.';
     case 'auth/too-many-requests':    return 'Too many attempts. Try again later.';
-    default:                          return 'Something went wrong. Please try again.';
+    case 'auth/invalid-api-key':      return 'Firebase is not configured yet. See auth.js.';
+    case 'auth/configuration-not-found':
+    case 'auth/internal-error':       return 'Auth service unavailable. Check Firebase setup.';
+    default:                          return `Error: ${code}`;
   }
 }
