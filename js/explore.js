@@ -1,7 +1,7 @@
 // =====================
 // CINESWIPE — EXPLORE
 // Phase 3: Card UI
-// Phase 4 will add drag/touch swipe
+// Phase 4: Swipe mechanics
 // =====================
 
 const VISIBLE   = 3;    // cards shown in stack at once
@@ -96,6 +96,7 @@ function buildCard(movie) {
       .catch(() => {});
   }
 
+  attachDragEvents(card);
   return card;
 }
 
@@ -107,13 +108,13 @@ function updatePositions() {
 }
 
 function getActiveCards() {
-  return [...cardStack.querySelectorAll('.swipe-card:not(.exit-right):not(.exit-left)')];
+  return [...cardStack.querySelectorAll('.swipe-card:not(.exit-right):not(.exit-left):not(.is-exiting)')];
 }
 
 // ── Add a card to the back of the visual stack ────────
 function addCardToBack(movie) {
   const card = buildCard(movie);
-  cardStack.insertBefore(card, cardStack.firstChild); // insert before = lowest z-index
+  cardStack.appendChild(card); // append to end = lowest z-index (back of stack)
   updatePositions();
 }
 
@@ -128,10 +129,11 @@ function fillStack() {
 
 // ── Perform a swipe (direction: 'left' | 'right') ─────
 function swipe(direction) {
+  if (dragState) return;                    // block during gesture
   const activeCards = getActiveCards();
   if (!activeCards.length) return;
 
-  const topCard = activeCards[activeCards.length - 1]; // last child = highest z-index
+  const topCard = activeCards[0]; // first child = highest z-index (data-pos="0")
   const movie   = topCard._movie;
 
   // Show stamp briefly
@@ -203,5 +205,151 @@ async function init() {
 
   fillStack();
 }
+
+// =====================
+// PHASE 4 — SWIPE MECHANICS
+// =====================
+
+const SWIPE_THRESHOLD = 100; // px needed to complete a swipe
+const ROTATION_FACTOR = 0.08; // degrees per px of drag
+const STAMP_THRESHOLD = 30;  // px before YES/NO stamp appears
+
+let dragState = null;
+// dragState = { card, startX, startY, currentX }
+
+// ── Helpers ───────────────────────────────────────────
+function getTopCard() {
+  const active = getActiveCards();
+  return active.length ? active[0] : null; // first child = data-pos="0" = top card
+}
+
+// ── Drag start ────────────────────────────────────────
+function onDragStart(card, x, y) {
+  if (card.classList.contains('is-exiting')) return;
+  if (card !== getTopCard()) return; // only the top card is draggable
+
+  dragState = { card, startX: x, startY: y, currentX: x };
+  card.style.transition = 'none';
+  document.body.classList.add('is-dragging');
+}
+
+// ── Drag move ─────────────────────────────────────────
+function onDragMove(x, y) {
+  if (!dragState) return;
+
+  const dx = x - dragState.startX;
+  dragState.currentX = x;
+
+  dragState.card.style.transform =
+    `translateX(${dx}px) rotate(${dx * ROTATION_FACTOR}deg)`;
+
+  // Show directional stamp
+  if (dx > STAMP_THRESHOLD) {
+    dragState.card.classList.add('stamp-yes');
+    dragState.card.classList.remove('stamp-no');
+  } else if (dx < -STAMP_THRESHOLD) {
+    dragState.card.classList.add('stamp-no');
+    dragState.card.classList.remove('stamp-yes');
+  } else {
+    dragState.card.classList.remove('stamp-yes', 'stamp-no');
+  }
+}
+
+// ── Drag end ──────────────────────────────────────────
+function onDragEnd() {
+  if (!dragState) return;
+
+  const { card, startX, currentX } = dragState;
+  const dx = currentX - startX;
+  dragState = null;
+
+  document.body.classList.remove('is-dragging');
+  card.classList.remove('stamp-yes', 'stamp-no');
+
+  if (Math.abs(dx) >= SWIPE_THRESHOLD) {
+    gestureSwipe(card, dx > 0 ? 'right' : 'left');
+  } else {
+    // Snap back to center
+    card.style.transition =
+      'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    card.style.transform = '';
+    setTimeout(() => { card.style.transition = ''; }, 400);
+  }
+}
+
+// ── Complete a gesture swipe ──────────────────────────
+function gestureSwipe(card, direction) {
+  const movie = card._movie;
+  card.classList.add('is-exiting');
+
+  if (direction === 'right') {
+    saveMovie(movie);
+    showToast(`"${movie.title}" saved to My List!`);
+  }
+
+  // Animate from current drag position to off-screen
+  card.style.transition =
+    'transform 0.42s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.42s ease';
+  card.style.transform = direction === 'right'
+    ? 'translateX(160%) rotate(25deg)'
+    : 'translateX(-160%) rotate(-25deg)';
+  card.style.opacity = '0';
+
+  card.addEventListener('transitionend', () => card.remove(), { once: true });
+
+  deck.shift();
+  updatePositions();
+
+  const shownCount = getActiveCards().length;
+  if (deck.length > shownCount) {
+    addCardToBack(deck[shownCount]);
+  }
+
+  if (!deck.length && !getActiveCards().length) {
+    stackEmpty.hidden = false;
+    btnYes.disabled = true;
+    btnNo.disabled  = true;
+  }
+
+  if (deck.length < LOW_WATER) fetchMore();
+}
+
+// ── Attach drag listeners to a card ──────────────────
+function attachDragEvents(card) {
+  // Mouse
+  card.addEventListener('mousedown', e => {
+    e.preventDefault();
+    onDragStart(card, e.clientX, e.clientY);
+  });
+
+  // Touch
+  card.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    onDragStart(card, t.clientX, t.clientY);
+  }, { passive: true });
+}
+
+// ── Global move / end listeners ───────────────────────
+document.addEventListener('mousemove', e => {
+  if (dragState) onDragMove(e.clientX, e.clientY);
+});
+
+document.addEventListener('mouseup', () => {
+  if (dragState) onDragEnd();
+});
+
+// passive: false so we can preventDefault and block page scroll during horizontal swipe
+document.addEventListener('touchmove', e => {
+  if (!dragState) return;
+  const t = e.touches[0];
+  const dx = Math.abs(t.clientX - dragState.startX);
+  const dy = Math.abs(t.clientY - dragState.startY);
+  if (dx > dy) e.preventDefault(); // suppress vertical scroll while swiping
+  onDragMove(t.clientX, t.clientY);
+}, { passive: false });
+
+document.addEventListener('touchend', () => {
+  if (dragState) onDragEnd();
+});
 
 init();
