@@ -81,6 +81,7 @@ authSignInBtn.addEventListener('click', async () => {
   if (!u || !p) { showError('Please enter a username and password.'); return; }
 
   authSignInBtn.disabled = true;
+  console.log('[CineSwipe] Attempting login with email:', toEmail(u));
   const { error } = await sb.auth.signInWithPassword({ email: toEmail(u), password: p });
   if (error) {
     console.error('[CineSwipe] Sign in error:', error.message);
