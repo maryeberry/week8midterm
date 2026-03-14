@@ -542,3 +542,49 @@ img {
     align-items: flex-start;
   }
 }
+
+/* =====================
+   SKELETON LOADING
+   ===================== */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.movie-card--skeleton {
+  pointer-events: none;
+}
+
+.movie-card__poster--skeleton,
+.movie-card__title--skeleton,
+.movie-card__tag--skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 4px;
+}
+
+.movie-card__poster--skeleton {
+  width: 100%;
+  aspect-ratio: 2/3;
+}
+
+.movie-card__title--skeleton {
+  height: 1em;
+  width: 80%;
+  margin: 0.5rem 0;
+}
+
+.movie-card__tag--skeleton {
+  display: inline-block;
+  height: 1.2em;
+  width: 4rem;
+  border-radius: 999px;
+}
+
+/* Empty / error state */
+.carousel__empty {
+  color: var(--color-text-muted);
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+}
