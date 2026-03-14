@@ -6,8 +6,8 @@
 // ── Supabase config ───────────────────────────────────
 // REPLACE these with your Supabase project values:
 // Supabase Dashboard → Project Settings → API
-const SUPABASE_URL      = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL      = 'https://bznrstwspjrxovpumiki.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6bnJzdHdzcGpyeG92cHVtaWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0NTc5NzYsImV4cCI6MjA4OTAzMzk3Nn0.IYA0b8hhCJBJcO-3IlrXnXMTfbpD52oK6nCM8CxPiqU';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
