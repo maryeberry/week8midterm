@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CineSwipe — Explore</title>
   <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/explore.css" />
 </head>
 <body>
+
   <header class="header">
     <div class="header__inner">
       <a href="index.html" class="header__logo">CineSwipe</a>
@@ -22,10 +24,44 @@
     </div>
   </header>
 
-  <main class="placeholder-main">
-    <h1 class="placeholder-text">Placeholder for sample movie photos and descriptions</h1>
+  <main class="explore-main">
+
+    <!-- YES / NO buttons -->
+    <div class="swipe-actions">
+      <button class="swipe-btn swipe-btn--no"  id="btnNo"  aria-label="Not interested">
+        <span class="swipe-btn__icon">✕</span>
+        <span class="swipe-btn__label">No</span>
+      </button>
+      <button class="swipe-btn swipe-btn--yes" id="btnYes" aria-label="Save to My List">
+        <span class="swipe-btn__icon">✓</span>
+        <span class="swipe-btn__label">Yes</span>
+      </button>
+    </div>
+
+    <!-- Card stack -->
+    <div class="card-stack" id="cardStack">
+
+      <!-- Loading state -->
+      <div class="stack-status" id="stackLoading">
+        <div class="spinner"></div>
+        <p>Finding movies for you…</p>
+      </div>
+
+      <!-- Empty state -->
+      <div class="stack-status" id="stackEmpty" hidden>
+        <p class="stack-status__msg">You've seen everything!</p>
+        <button class="reload-btn" id="btnReload">Load More</button>
+      </div>
+
+    </div>
+
+    <!-- Saved toast -->
+    <div class="saved-toast" id="savedToast" aria-live="polite"></div>
+
   </main>
 
+  <script src="js/api.js"></script>
+  <script src="js/explore.js"></script>
   <script src="js/nav.js"></script>
 </body>
 </html>
