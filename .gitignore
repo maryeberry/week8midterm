@@ -15,9 +15,10 @@
 .env
 .env.local
 
-# API keys (once added)
+# API keys — never commit these
 config/keys.js
 config/secrets.js
+js/config.js
 
 # Logs
 *.log
