@@ -1,0 +1,144 @@
+/* =====================
+   GENRE PAGE LAYOUT
+   ===================== */
+.genre-main {
+  margin-top: var(--header-height);
+  padding-bottom: 4rem;
+}
+
+/* =====================
+   SEARCH SECTION
+   ===================== */
+.genre-search {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.genre-search__title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.genre-search__sub {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Search bar ── */
+.search-bar {
+  display: flex;
+  max-width: 580px;
+  margin: 0 auto 1.4rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--color-surface-2, #242424);
+  transition: border-color 0.2s;
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-accent);
+}
+
+.search-bar__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.75rem 1.2rem;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-family: var(--font-main);
+}
+
+.search-bar__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Clear 'x' button inside native search input */
+.search-bar__input::-webkit-search-cancel-button {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+.search-bar__btn {
+  background: var(--color-accent);
+  border: none;
+  padding: 0 1.2rem;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.search-bar__btn:hover {
+  background: var(--color-accent-hover, #c1121f);
+}
+
+/* ── Genre chips ── */
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.genre-chip {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-size: 0.85rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.genre-chip:hover,
+.genre-chip.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(230, 57, 70, 0.08);
+}
+
+/* =====================
+   SEARCH RESULTS
+   ===================== */
+.search-results {
+  padding: 1.5rem 0 0;
+}
+
+.search-results .carousel__empty {
+  color: var(--color-text-muted);
+  padding: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* =====================
+   CAROUSELS WRAPPER
+   ===================== */
+.genre-carousels {
+  margin-top: 0.5rem;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 768px) {
+  .genre-search {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+}
