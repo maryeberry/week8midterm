@@ -27,10 +27,18 @@ function getSavedMovies() {
 }
 
 function saveMovie(movie) {
-  const saved = getSavedMovies();
-  if (!saved.find(m => m.imdbId === movie.imdbId)) {
-    saved.push(movie);
-    localStorage.setItem('savedMovies', JSON.stringify(saved));
+  try {
+    console.log('[CineSwipe] Saving movie:', movie);
+    const saved = getSavedMovies();
+    if (!saved.find(m => m.imdbId === movie.imdbId)) {
+      saved.push(movie);
+      localStorage.setItem('savedMovies', JSON.stringify(saved));
+      console.log('[CineSwipe] Saved. Total saved:', saved.length);
+    } else {
+      console.log('[CineSwipe] Movie already in list, skipping.');
+    }
+  } catch (err) {
+    console.error('[CineSwipe] saveMovie failed:', err);
   }
 }
 

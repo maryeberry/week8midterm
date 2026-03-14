@@ -1,0 +1,204 @@
+/* =====================
+   MY LIST PAGE LAYOUT
+   ===================== */
+.mylist-main {
+  margin-top: var(--header-height);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* =====================
+   PAGE HEADER
+   ===================== */
+.mylist-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.mylist-header__title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+}
+
+.mylist-header__count {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.mylist-clear-btn {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: 6px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.mylist-clear-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* =====================
+   EMPTY STATE
+   ===================== */
+.mylist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  min-height: 40vh;
+  text-align: center;
+}
+
+.mylist-empty__msg {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
+.mylist-empty__cta {
+  display: inline-block;
+  background: var(--color-accent);
+  color: #fff;
+  padding: 0.6rem 1.6rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.mylist-empty__cta:hover {
+  background: var(--color-accent-hover, #c1121f);
+}
+
+/* =====================
+   MOVIE GALLERY GRID
+   ===================== */
+.mylist-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ── Individual gallery card ── */
+.mylist-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mylist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Poster ── */
+.mylist-card__poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  background: var(--color-surface-2, #242424);
+}
+
+/* ── Info panel ── */
+.mylist-card__info {
+  padding: 0.75rem 0.8rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.mylist-card__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mylist-card__year {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.mylist-card__rating {
+  font-size: 0.8rem;
+  color: #f5c518;
+  font-weight: 600;
+}
+
+.mylist-card__genre {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-top: 0.1rem;
+  min-height: 1.4em;
+}
+
+/* ── Remove button ── */
+.mylist-card__remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  border: none;
+  color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+  line-height: 1;
+}
+
+.mylist-card:hover .mylist-card__remove {
+  opacity: 1;
+}
+
+.mylist-card__remove:hover {
+  background: var(--color-accent);
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 480px) {
+  .mylist-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .mylist-main {
+    padding: 2rem 1rem 3rem;
+  }
+}

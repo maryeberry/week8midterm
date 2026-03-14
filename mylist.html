@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CineSwipe — My List</title>
   <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/mylist.css" />
 </head>
 <body>
+
+  <!-- HEADER -->
   <header class="header">
     <div class="header__inner">
       <a href="index.html" class="header__logo">CineSwipe</a>
@@ -22,10 +25,30 @@
     </div>
   </header>
 
-  <main class="placeholder-main">
-    <h1 class="placeholder-text">Placeholder for user's liked movie library</h1>
+  <main class="mylist-main">
+
+    <!-- PAGE HEADER -->
+    <div class="mylist-header">
+      <div class="mylist-header__text">
+        <h1 class="mylist-header__title">My List</h1>
+        <p class="mylist-header__count" id="movieCount"></p>
+      </div>
+      <button class="mylist-clear-btn" id="clearAllBtn" hidden>Clear All</button>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="mylist-empty" id="emptyState" hidden>
+      <p class="mylist-empty__msg">You haven't saved any movies yet.</p>
+      <a href="explore.html" class="mylist-empty__cta">Start Exploring</a>
+    </div>
+
+    <!-- MOVIE GALLERY -->
+    <div class="mylist-gallery" id="movieGallery"></div>
+
   </main>
 
+  <script src="js/api.js"></script>
+  <script src="js/mylist.js"></script>
   <script src="js/nav.js"></script>
 </body>
 </html>
