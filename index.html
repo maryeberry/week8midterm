@@ -30,8 +30,34 @@
       <h1 class="hero__title">Find Your Next<br />Favorite Movie</h1>
       <p class="hero__desc">Find new movies today — swipe through thousands of titles tailored to your taste.</p>
       <div class="hero__actions">
-        <a href="home.html" class="btn btn--primary">Get Started</a>
-        <a href="#" class="btn btn--secondary">Log In</a>
+
+        <!-- State: logged out -->
+        <div id="heroLoggedOut">
+          <a href="explore.html" class="btn btn--primary">Get Started</a>
+          <button class="btn btn--secondary" id="heroLoginBtn">Log In</button>
+        </div>
+
+        <!-- State: login / sign-up form (hidden initially) -->
+        <div id="heroLoginForm" hidden>
+          <div class="hero-auth">
+            <input type="text"     id="authUsername" class="hero-auth__input" placeholder="Username" autocomplete="username" />
+            <input type="password" id="authPassword" class="hero-auth__input" placeholder="Password" autocomplete="current-password" />
+            <p class="hero-auth__error" id="authError" hidden></p>
+            <div class="hero-auth__btns">
+              <button class="btn btn--primary"   id="authSignInBtn">Sign In</button>
+              <button class="btn btn--secondary" id="authSignUpBtn">Sign Up</button>
+            </div>
+            <button class="hero-auth__cancel" id="authCancelBtn">Cancel</button>
+          </div>
+        </div>
+
+        <!-- State: logged in (hidden initially) -->
+        <div id="heroLoggedIn" hidden>
+          <p class="hero-auth__welcome" id="heroWelcome"></p>
+          <a href="explore.html" class="btn btn--primary">Get Started</a>
+          <button class="btn btn--secondary" id="heroLogoutBtn">Log Out</button>
+        </div>
+
       </div>
     </div>
     <div class="hero__image-wrap">
@@ -119,7 +145,12 @@
     </div>
   </footer>
 
+  <!-- Firebase compat SDK (plain scripts, no ES modules needed) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
   <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/landing.js"></script>
 </body>
 </html>
