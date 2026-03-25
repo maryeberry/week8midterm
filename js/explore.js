@@ -188,6 +188,13 @@ function swipe(direction) {
 btnYes.addEventListener('click', () => swipe('right'));
 btnNo.addEventListener('click',  () => swipe('left'));
 
+// ── Keyboard shortcuts (n = yes, b = no) ──────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'n' || e.key === 'N') swipe('right');
+  if (e.key === 'b' || e.key === 'B') swipe('left');
+});
+
 btnReload.addEventListener('click', async () => {
   stackEmpty.hidden = true;
   stackLoading.hidden = false;
