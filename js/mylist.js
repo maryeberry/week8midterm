@@ -6,11 +6,16 @@
 
 const gallery           = document.getElementById('movieGallery');
 const emptyState        = document.getElementById('emptyState');
+const guestState        = document.getElementById('guestState');
 const movieCount        = document.getElementById('movieCount');
 const clearAllBtn       = document.getElementById('clearAllBtn');
 const completedSection  = document.getElementById('completedSection');
 const completedGallery  = document.getElementById('completedGallery');
 const completedCount    = document.getElementById('completedCount');
+
+// ── Supabase auth check ───────────────────────────────
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── localStorage helpers ──────────────────────────────
 function getSavedMovies() {
@@ -223,7 +228,14 @@ function buildCompletedCard(movie) {
 }
 
 // ── Render the full page ──────────────────────────────
-function render() {
+async function render() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    guestState.hidden  = false;
+    emptyState.hidden  = true;
+    clearAllBtn.hidden = true;
+    return;
+  }
   let saved = [];
   try {
     saved = getSavedMovies();

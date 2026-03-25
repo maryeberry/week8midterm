@@ -36,6 +36,12 @@
       <button class="mylist-clear-btn" id="clearAllBtn" hidden>Clear All</button>
     </div>
 
+    <!-- NOT LOGGED IN STATE -->
+    <div class="mylist-guest" id="guestState" hidden>
+      <p class="mylist-guest__msg">Only registered users can save movies to their library.</p>
+      <a href="index.html" class="mylist-empty__cta">Log In</a>
+    </div>
+
     <!-- EMPTY STATE -->
     <div class="mylist-empty" id="emptyState" hidden>
       <p class="mylist-empty__msg">You haven't saved any movies yet.</p>
@@ -58,6 +64,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/mylist.js"></script>
