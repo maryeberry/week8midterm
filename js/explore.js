@@ -70,13 +70,13 @@ function buildCard(movie) {
   card.className = 'swipe-card';
   card._movie = movie;
 
-  const poster = movie.poster || 'img/card-placeholder.jpg';
+  const poster = movie.poster || 'img/card-placeholder.svg';
   const year   = movie.year   ? `<span class="swipe-card__year">${movie.year}</span>` : '';
   card.innerHTML = `
     <div class="swipe-card__stamp swipe-card__stamp--yes">YES</div>
     <div class="swipe-card__stamp swipe-card__stamp--no">NO</div>
     <img class="swipe-card__poster" src="${poster}" alt="${movie.title}"
-         onerror="this.src='img/card-placeholder.jpg'" />
+         onerror="this.src='img/card-placeholder.svg'" />
     <div class="swipe-card__info">
       <h3 class="swipe-card__title">${movie.title}</h3>
       <div class="swipe-card__meta">

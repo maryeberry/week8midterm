@@ -20,14 +20,14 @@ function buildCard(movie, label) {
   const card = document.createElement('div');
   card.className = 'movie-card';
 
-  const posterSrc = movie.poster || 'img/card-placeholder.jpg';
+  const posterSrc = movie.poster || 'img/card-placeholder.svg';
   const tag       = label || 'Movie';
   const year      = movie.year ? ` (${movie.year})` : '';
 
   card.innerHTML = `
     <div class="movie-card__poster">
       <img src="${posterSrc}" alt="${movie.title}"
-           onerror="this.src='img/card-placeholder.jpg'" />
+           onerror="this.src='img/card-placeholder.svg'" />
     </div>
     <p class="movie-card__title">${movie.title}${year}</p>
     <span class="movie-card__tag">${tag}</span>

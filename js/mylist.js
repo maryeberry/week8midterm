@@ -57,11 +57,11 @@ function buildCard(movie) {
   card.className = 'mylist-card';
   card.dataset.imdbId = movie.imdbId || '';
 
-  const poster = movie.poster || 'img/card-placeholder.jpg';
+  const poster = movie.poster || 'img/card-placeholder.svg';
 
   card.innerHTML = `
     <img class="mylist-card__poster" src="${poster}" alt="${movie.title}"
-         onerror="this.src='img/card-placeholder.jpg'" />
+         onerror="this.src='img/card-placeholder.svg'" />
     <div class="mylist-card__info">
       <p class="mylist-card__title">${movie.title}</p>
       <span class="mylist-card__year">${movie.year || ''}</span>
@@ -131,13 +131,13 @@ function buildCompletedCard(movie) {
   card.className = 'completed-card';
   card.dataset.imdbId = movie.imdbId || '';
 
-  const poster  = movie.poster || 'img/card-placeholder.jpg';
+  const poster  = movie.poster || 'img/card-placeholder.svg';
   const thumbs  = movie.thumbs  || null;
   const comment = movie.comment || '';
 
   card.innerHTML = `
     <img class="completed-card__poster" src="${poster}" alt="${movie.title}"
-         onerror="this.src='img/card-placeholder.jpg'" />
+         onerror="this.src='img/card-placeholder.svg'" />
     <div class="completed-card__body">
       <p class="completed-card__title">${movie.title}</p>
       <span class="completed-card__year">${movie.year || ''}</span>
