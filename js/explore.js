@@ -191,8 +191,8 @@ btnNo.addEventListener('click',  () => swipe('left'));
 // ── Keyboard shortcuts (n = yes, b = no) ──────────────
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key === 'n' || e.key === 'N') swipe('right');
-  if (e.key === 'b' || e.key === 'B') swipe('left');
+  if (e.key === 'n') swipe('right');
+  if (e.key === 'b') swipe('left');
 });
 
 btnReload.addEventListener('click', async () => {
