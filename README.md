@@ -1,13 +1,11 @@
-# week7draft
+My project is a card swipe movie application that helps users find new movies to watch. The application allows the user to go through a stack of movies, or search movies, and then add them to their library.
 
-## Concept
+Setup Instructions: username: guest password: 123456
 
-My concept is a "swipe-based" movie picker. Using a similar mechanism to Tinder, the user should be able to select certain genres or keywords, and then be able to go through a stack of recommended movies, swiping right meaning they're interested and they want to add it to their "to watch" library, and swipe left to pass.
+Technologies/Tools: I used Claude, Vercel, Supabase, and this guy's movie API database. https://www.omdbapi.com/
 
-## Technology
+Bugs: Slow API database retrieval, some of the movies are not properly displayed from API (can show as flashing text or do not contain images).
 
-Some of the technology I plan to use for the project would be pulling from a public movie API database and enabling local storage for the user to have their preferences and library saved on their browser. The technology specs I will use is HTML, JavaScript, and Java.
+Limitations: Cannot create new account without manually adding user login information on Vercel/supabase, Movie generation within genre is not entirely randomized within slideshows and card stack
 
-## Tools
-
-I used Claude for this project draft.
+What I Learned: I learned that Claude AI was capable of integrating multiple types of technologies on its own, and that we, the user only have to input the proper settings on our end such as Keys. I also learned that the microiterations indeed did help with debugging the issues as the tiny step by steps helped fix issues that could not be caught and fixed on the first try. A few of my troubleshooting issues had bugs that needed to be relayed to Claude multiple times before it was solved.
