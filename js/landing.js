@@ -54,8 +54,9 @@ function buildCard(movie, label) {
 
 // =====================
 // LOAD A CAROUSEL
+// Accepts an array of queries, fetches all in parallel, combines + deduplicates + shuffles
 // =====================
-async function loadCarousel(trackId, query, label) {
+async function loadCarousel(trackId, queries, label) {
   const track = document.getElementById(trackId);
   if (!track) return;
 
@@ -68,7 +69,15 @@ async function loadCarousel(trackId, query, label) {
   `).join('');
 
   try {
-    const movies = await searchMovies(query);
+    const batches = await Promise.all(queries.map(q => searchMovies(q).catch(() => [])));
+    const seen = new Set();
+    const movies = shuffleArray(
+      batches.flat().filter(m => {
+        if (!m.imdbId || seen.has(m.imdbId)) return false;
+        seen.add(m.imdbId);
+        return true;
+      })
+    );
     if (!movies.length) {
       track.innerHTML = '<p class="carousel__empty">No results found.</p>';
       return;
@@ -84,6 +93,29 @@ async function loadCarousel(trackId, query, label) {
 // =====================
 // INIT ALL CAROUSELS
 // =====================
-loadCarousel('trackTrending', 'night',    'Trending');
-loadCarousel('trackAction',   'warrior',  'Action');
-loadCarousel('trackStaff',    'journey',  'Adventure');
+const TRENDING_POOL = [
+  'the', 'man', 'dark', 'last', 'black', 'dead', 'rise', 'shadow', 'blood', 'fire',
+  'night', 'king', 'star', 'gold', 'lost', 'wild', 'red', 'iron', 'evil', 'storm',
+  'city', 'end', 'cold', 'fear', 'run', 'fall', 'edge', 'blue', 'zero', 'one',
+  'broken', 'deep', 'beyond', 'ghost', 'white', 'gone', 'truth', 'bad', 'dream', 'return'
+];
+const ACTION_POOL = [
+  'mission', 'war', 'battle', 'operation', 'strike', 'agent', 'force', 'soldier',
+  'combat', 'siege', 'fury', 'lethal', 'danger', 'target', 'commando', 'warrior',
+  'fighter', 'hunter', 'revenge', 'rogue', 'assassin', 'mercenary', 'sniper',
+  'ranger', 'raid', 'ambush', 'pursuit', 'outlaw', 'fugitive', 'threat',
+  'breach', 'lockdown', 'patrol', 'recon', 'gunshot'
+];
+const ADVENTURE_POOL = [
+  'quest', 'journey', 'island', 'treasure', 'expedition', 'voyage', 'sea', 'mountain',
+  'jungle', 'lost', 'discover', 'horizon', 'trail', 'escape', 'survivor', 'wonder',
+  'legend', 'ancient', 'atlas', 'passage', 'odyssey', 'nomad', 'pilgrim', 'safari',
+  'canyon', 'river', 'cave', 'temple', 'relic', 'compass', 'explorer', 'guide',
+  'frontier', 'wilderness', 'portal'
+];
+
+function pick2(arr) { return shuffleArray([...arr]).slice(0, 2); }
+
+loadCarousel('trackTrending', pick2(TRENDING_POOL),  'Trending');
+loadCarousel('trackAction',   pick2(ACTION_POOL),    'Action');
+loadCarousel('trackStaff',    pick2(ADVENTURE_POOL), 'Adventure');

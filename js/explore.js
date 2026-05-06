@@ -7,19 +7,26 @@
 const VISIBLE   = 3;    // cards shown in stack at once
 const LOW_WATER = 4;    // refetch when deck drops below this
 
-const QUERIES = ['thriller', 'adventure', 'comedy', 'drama', 'mystery'];
-let queryIdx  = 0;
+const QUERIES = shuffleArray([
+  'thriller', 'adventure', 'comedy', 'drama', 'mystery',
+  'horror', 'romance', 'crime', 'fantasy', 'action',
+  'western', 'biography', 'heist', 'spy', 'survival',
+  'war', 'science', 'space', 'ghost', 'treasure'
+]);
+let queryIdx = 0;
 
-let deck = []; // movies not yet shown
+let deck = [];          // movies not yet shown
+let selectedGenre = null; // null = random
 
 // DOM
-const cardStack   = document.getElementById('cardStack');
+const cardStack    = document.getElementById('cardStack');
 const stackLoading = document.getElementById('stackLoading');
-const stackEmpty  = document.getElementById('stackEmpty');
-const btnYes      = document.getElementById('btnYes');
-const btnNo       = document.getElementById('btnNo');
-const btnReload   = document.getElementById('btnReload');
-const savedToast  = document.getElementById('savedToast');
+const stackEmpty   = document.getElementById('stackEmpty');
+const btnYes       = document.getElementById('btnYes');
+const btnNo        = document.getElementById('btnNo');
+const btnReload    = document.getElementById('btnReload');
+const savedToast   = document.getElementById('savedToast');
+const genreChips   = document.querySelectorAll('#genreChips .genre-chip');
 
 // ── localStorage helpers ──────────────────────────────
 function getSavedMovies() {
@@ -53,16 +60,49 @@ function showToast(msg) {
 
 // ── Fetch a batch of movies ───────────────────────────
 async function fetchMore() {
-  const query = QUERIES[queryIdx++ % QUERIES.length];
+  const query = selectedGenre || QUERIES[queryIdx++ % QUERIES.length];
   try {
     const movies = await searchMovies(query);
     const existingIds = new Set(deck.map(m => m.imdbId));
-    const fresh = movies.filter(m => m.imdbId && !existingIds.has(m.imdbId));
+    const fresh = shuffleArray(movies.filter(m => m.imdbId && !existingIds.has(m.imdbId)));
     deck.push(...fresh);
   } catch (err) {
     console.error('fetchMore failed:', err);
   }
 }
+
+// ── Clear the deck and reload (used when genre filter changes) ──
+async function resetDeck() {
+  [...cardStack.querySelectorAll('.swipe-card')].forEach(c => c.remove());
+  deck = [];
+  queryIdx = 0;
+
+  stackLoading.hidden = false;
+  stackEmpty.hidden   = true;
+  btnYes.disabled     = false;
+  btnNo.disabled      = false;
+
+  await Promise.all([fetchMore(), fetchMore()]);
+  stackLoading.hidden = true;
+
+  if (!deck.length) { stackEmpty.hidden = false; return; }
+  fillStack();
+}
+
+// ── Genre chip filter ─────────────────────────────────
+genreChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    const isActive = chip.classList.contains('active');
+    genreChips.forEach(c => c.classList.remove('active'));
+    if (isActive) {
+      selectedGenre = null;        // deselect → back to random
+    } else {
+      chip.classList.add('active');
+      selectedGenre = chip.dataset.genre;
+    }
+    resetDeck();
+  });
+});
 
 // ── Build one card element ────────────────────────────
 function buildCard(movie) {

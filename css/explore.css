@@ -171,6 +171,36 @@ body.is-dragging {
 }
 
 /* =====================
+   GENRE FILTER CHIPS
+   ===================== */
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  max-width: 360px;
+}
+
+.genre-chip {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.82rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.genre-chip:hover,
+.genre-chip.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(230, 57, 70, 0.08);
+}
+
+/* =====================
    YES / NO BUTTONS
    ===================== */
 .swipe-actions {

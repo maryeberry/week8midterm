@@ -1,3 +1,5 @@
+UPDATED: I have added an algorithm to adjust the movies displayed on the carousels and interest stack so that the movies appear to be shuffled properly across titles and genres. I also added a genre filter on the explore page's stack so that the user is able to go through a specific genre that they are interested in seeing. The previous shuffling issue is displayed in the github folder: changes.
+
 My project is a card swipe movie application that helps users find new movies to watch. The application allows the user to go through a stack of movies, or search movies, and then add them to their library.
 
 Setup Instructions: username: guest password: 123456

@@ -47,14 +47,23 @@ function showSkeletons(track, count = 6) {
 }
 
 // ── Load a standard carousel ──────────────────────────
-async function loadCarousel(trackId, query, label) {
+// Accepts an array of queries, fetches in parallel, combines + deduplicates + shuffles
+async function loadCarousel(trackId, queries, label) {
   const track = document.getElementById(trackId);
   if (!track) return;
 
   showSkeletons(track);
 
   try {
-    const movies = await searchMovies(query);
+    const batches = await Promise.all(queries.map(q => searchMovies(q).catch(() => [])));
+    const seen = new Set();
+    const movies = shuffleArray(
+      batches.flat().filter(m => {
+        if (!m.imdbId || seen.has(m.imdbId)) return false;
+        seen.add(m.imdbId);
+        return true;
+      })
+    );
     if (!movies.length) {
       track.innerHTML = '<p class="carousel__empty">No results found.</p>';
       return;
@@ -67,15 +76,18 @@ async function loadCarousel(trackId, query, label) {
   }
 }
 
-// ── You Might Like — random category pick ────────────
+// ── You Might Like — pick 2 random categories ────────
 const RANDOM_POOL = [
-  'adventure', 'mystery', 'fantasy', 'crime', 'biography',
-  'western', 'musical', 'documentary', 'superhero', 'spy'
+  'adventure', 'mystery', 'fantasy', 'crime', 'biography', 'western', 'musical',
+  'documentary', 'superhero', 'spy', 'heist', 'survival', 'thriller', 'comedy',
+  'drama', 'horror', 'history', 'sport', 'nature', 'alien', 'robot', 'vampire',
+  'zombie', 'detective', 'pirate', 'ninja', 'witch', 'wizard', 'rebel', 'maverick'
 ];
 
+function pick2(arr) { return shuffleArray([...arr]).slice(0, 2); }
+
 async function loadYouMightLike(trackId) {
-  const query = RANDOM_POOL[Math.floor(Math.random() * RANDOM_POOL.length)];
-  await loadCarousel(trackId, query, 'For You');
+  await loadCarousel(trackId, pick2(RANDOM_POOL), 'For You');
 }
 
 // ── New Releases — filter for 2025 / 2026 ────────────
@@ -203,7 +215,18 @@ chips.forEach(chip => {
 clearSearchBtn.addEventListener('click', clearSearch);
 
 // ── Init all carousels ────────────────────────────────
-loadCarousel('trackAnimation', 'animation',   'Animation');
-loadCarousel('trackRomance',   'love romance', 'Romance');
+const ANIMATION_POOL = [
+  'animation', 'animated', 'cartoon', 'dreamworks', 'disney', 'anime',
+  'princess', 'fairy', 'dragon', 'creature', 'robot', 'enchanted',
+  'magical', 'wonder', 'kingdom', 'village', 'ocean', 'forest', 'hero kids', 'adventure kids'
+];
+const ROMANCE_POOL = [
+  'love', 'romance', 'wedding', 'kiss', 'heart', 'paris', 'forever', 'together',
+  'beloved', 'sweetheart', 'crush', 'desire', 'passion', 'tender', 'adore',
+  'cherish', 'dream', 'meant', 'perfect match', 'soulmate'
+];
+
+loadCarousel('trackAnimation', pick2(ANIMATION_POOL), 'Animation');
+loadCarousel('trackRomance',   pick2(ROMANCE_POOL),   'Romance');
 loadYouMightLike('trackMightLike');
 loadNewReleases('trackNew');
